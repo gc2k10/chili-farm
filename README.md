@@ -1,23 +1,37 @@
-# CHILLI FARM 🌶️
+# ChiliFarm
 
-Domowa uprawa Naga Jolokia z doświetlaniem, pomiarem wilgotności podłoża i planowanym podlewaniem z Raspberry Pi Pico 2 W.
+A modular, self-hosted smart growing project for chili peppers, starting with a single Naga Jolokia plant.
 
-Projekt zaczyna się od jednej doniczki. Lampą steruje harmonogram gniazdka Aqara. Pico ma zbierać pomiary, a później uruchamiać pompkę dopiero po sprawdzeniu stanu zbiornika i limitów podlewania. Raspberry Pi 5 ma docelowo przechowywać historię pomiarów i udostępniać panel.
+ChiliFarm combines Raspberry Pi Pico 2 W, MicroPython, soil sensing, grow lighting and planned automated irrigation. A Raspberry Pi 5 will eventually host measurement history and a responsive dashboard.
 
-| Element | Etap |
-| --- | --- |
-| Oświetlenie LED | Dobór lampy i oprawy, konfiguracja niezależnego harmonogramu |
-| Wilgotność podłoża | Skrypt odczytu ADC i instrukcja kalibracji |
-| Podlewanie | Projekt, montaż i próby do wykonania |
-| GFX Pack i Enviro Urban | Planowane wyświetlanie stanu i niezależne pomiary otoczenia |
-| Raspberry Pi 5 | Planowana historia pomiarów i panel sterowania |
-| Kamera | Planowane zdjęcia wzrostu |
+## Project status
 
-## Od czego zacząć
+Early prototype — not production-ready.
 
-1. Sprawdź [sprzęt i architekturę](docs/hardware.md).
-2. Uruchom [pomiar i kalibrację](docs/commissioning.md) z odłączoną pompą.
-3. Po zapisaniu pomiarów przejdź do prób hydraulicznych opisanych w tej samej instrukcji.
-4. Zobacz [plan rozwoju](docs/roadmap.md), w tym zakres przyszłego panelu.
+| Component | Status |
+|---|---|
+| Grow lighting | Hardware selected; schedule verification pending |
+| Soil sensing | Diagnostic script available; hardware validation pending |
+| Irrigation | Planned; assembly and safety testing pending |
+| Local display and environmental sensing | Planned |
+| Telemetry and dashboard | Planned |
+| Plant photography | Planned |
 
-`firmware/read_soil.py` to skrypt diagnostyczny uruchamiany ręcznie. Publikuje surowe odczyty przez konsolę USB. Test na docelowym sprzęcie jest jeszcze przed projektem.
+## Getting started
+
+1. Review the [hardware and architecture](docs/hardware.md).
+2. Follow the [commissioning and calibration guide](docs/commissioning.md) with the pump disconnected.
+3. Run [the MicroPython diagnostic](firmware/read_soil.py) manually in Thonny.
+4. Record measurements and validate the sensor before attempting irrigation.
+
+## Safety
+
+Keep water away from electronics. Verify voltage levels, pump driver compatibility and flyback protection. Never enable unattended watering before testing fail-safe behavior and runtime limits.
+
+## Roadmap
+
+See the [development roadmap](docs/roadmap.md). Contributions and feedback are welcome through GitHub Issues. Please do not include credentials or private infrastructure details.
+
+## License and support
+
+License selection and optional funding links are pending. No payment is required to view this repository.
