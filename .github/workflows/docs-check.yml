@@ -1,0 +1,19 @@
+name: Repository checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required documentation
+        run: |
+          set -eu
+          for file in README.md LICENSE SECURITY.md CONTRIBUTING.md CHANGELOG.md; do
+            test -s "$file"
+          done
+      - name: Check diagnostic Python syntax
+        run: python3 -m py_compile firmware/read_soil.py
