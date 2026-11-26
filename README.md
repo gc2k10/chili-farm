@@ -34,4 +34,4 @@ See the [development roadmap](docs/roadmap.md). Contributions and feedback are w
 
 ## License and support
 
-License selection and optional funding links are pending. No payment is required to view this repository.
+Licensed under the [MIT License](LICENSE). Optional funding links are pending. No payment is required to view this repository.
