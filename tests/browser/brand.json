@@ -1,0 +1,12 @@
+{
+  "name": "ChiliFarm",
+  "dimensions": [
+    2048,
+    682
+  ],
+  "ranges": [
+    "Simulated range: 38–45%.",
+    "Simulated range: 35–51%."
+  ],
+  "repository": "https://github.com/gc2k10/chili-farm"
+}
