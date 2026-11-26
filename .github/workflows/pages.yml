@@ -24,11 +24,14 @@ jobs:
       - uses: actions/configure-pages@v5
       - name: Stage public demo assets
         run: |
-          mkdir -p public-demo
+          mkdir -p public-demo/assets/brand
           cp frontend/index.html frontend/style.css frontend/app.js frontend/about.html public-demo/
+          # Publish reviewed brand files only; never copy the entire repository.
+          cp frontend/assets/brand/chilifarm-original.png frontend/assets/brand/favicon.ico frontend/assets/brand/favicon-32.png frontend/assets/brand/apple-touch-icon.png public-demo/assets/brand/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public-demo
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
