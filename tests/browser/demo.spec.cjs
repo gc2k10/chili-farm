@@ -63,3 +63,15 @@ test('presentation and dashboard navigation work in both directions', async ({ p
   await page.getByRole('link', { name: 'Explore interactive demo', exact: true }).click();
   await expect(page.getByLabel('Period')).toBeVisible();
 });
+
+test('chart labels remain readable and period control remains touch-sized', async ({ page }) => {
+  await page.goto('/');
+  const select = page.getByLabel('Period');
+  expect((await select.boundingBox()).height).toBeGreaterThanOrEqual(44);
+  const label = page.locator('#chart text').first();
+  await expect.poll(() => label.evaluate(el => parseFloat(getComputedStyle(el).fontSize) * el.getScreenCTM().a)).toBeGreaterThanOrEqual(11.9);
+  await select.selectOption('7');
+  await page.setViewportSize({ width: 390, height: 900 });
+  await expect(page.locator('#summary')).toHaveText(brand.ranges[1]);
+  await expect.poll(() => label.evaluate(el => parseFloat(getComputedStyle(el).fontSize) * el.getScreenCTM().a)).toBeGreaterThanOrEqual(11.9);
+});
