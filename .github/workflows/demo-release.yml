@@ -1,0 +1,42 @@
+name: Prepare v0.1.0-demo draft
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/releases/v0.1.0-demo.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: prepare-v0.1.0-demo
+  cancel-in-progress: false
+jobs:
+  checks:
+    uses: ./.github/workflows/demo-checks.yml
+  draft:
+    needs: checks
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build allowlisted demo archive
+        run: |
+          python3 scripts/package-demo.py --source-commit "$GITHUB_SHA"
+          python3 scripts/check-demo-package.py
+          cd dist
+          sha256sum *.zip > SHA256SUMS
+      - name: Prepare draft without publishing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.1.0-demo --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release already exists; leaving it unchanged."
+            exit 0
+          fi
+          gh release create v0.1.0-demo dist/*.zip dist/SHA256SUMS \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "v0.1.0-demo — Standalone synthetic dashboard" \
+            --notes-file docs/releases/v0.1.0-demo.md --draft --prerelease

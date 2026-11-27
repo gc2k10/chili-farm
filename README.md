@@ -8,6 +8,18 @@ A modular, self-hosted smart growing project for chili peppers, starting with a 
 
 ChiliFarm combines Raspberry Pi Pico 2 W, MicroPython, soil sensing, grow lighting and planned automated irrigation. A Raspberry Pi 5 will eventually host measurement history and a responsive dashboard.
 
+## Try the frontend demo
+
+[Open the live demo](https://gc2k10.github.io/chili-farm/), or run this from the repository root with Python 3:
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1 --directory frontend
+```
+
+Open http://127.0.0.1:8000. No device connection or credentials are needed. All readings are synthetic.
+
+The `v0.1.0-demo` prerelease is prepared as a draft. See the [quick-start guide](docs/demo-start.md), [verified test scope](docs/demo-validation.md) and [release notes](docs/releases/v0.1.0-demo.md).
+
 ## Project status
 
 Early prototype — not production-ready.

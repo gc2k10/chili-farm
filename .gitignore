@@ -8,3 +8,9 @@ secrets.py
 *.pem
 *.key
 logs/
+
+# Demo test and release outputs
+node_modules/
+playwright-report/
+test-results/
+dist/
