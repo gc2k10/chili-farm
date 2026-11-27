@@ -23,5 +23,5 @@ function draw(){
  document.querySelector("#summary").textContent="Simulated range: "+Math.min(...values)+"–"+Math.max(...values)+"%.";
 }
 period.addEventListener("change",draw);draw();
-// Redraw only when width changes, so height changes do not create a resize loop.
-new ResizeObserver(() => { if(chartWidth() !== renderedWidth) draw(); }).observe(chart);
+// Only viewport changes resize this standalone chart; avoid observing our own SVG mutations.
+window.addEventListener('resize', () => { if(chartWidth() !== renderedWidth) draw(); });

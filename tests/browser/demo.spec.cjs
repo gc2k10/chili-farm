@@ -65,13 +65,18 @@ test('presentation and dashboard navigation work in both directions', async ({ p
 });
 
 test('chart labels remain readable and period control remains touch-sized', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
   await page.goto('/');
   const select = page.getByLabel('Period');
   expect((await select.boundingBox()).height).toBeGreaterThanOrEqual(44);
   const label = page.locator('#chart text').first();
   await expect.poll(() => label.evaluate(el => parseFloat(getComputedStyle(el).fontSize) * el.getScreenCTM().a)).toBeGreaterThanOrEqual(11.9);
   await select.selectOption('7');
-  await page.setViewportSize({ width: 390, height: 900 });
-  await expect(page.locator('#summary')).toHaveText(brand.ranges[1]);
-  await expect.poll(() => label.evaluate(el => parseFloat(getComputedStyle(el).fontSize) * el.getScreenCTM().a)).toBeGreaterThanOrEqual(11.9);
+  for (const width of [390, 768, 320, 1280, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.locator('#summary')).toHaveText(brand.ranges[1]);
+    await expect.poll(() => label.evaluate(el => parseFloat(getComputedStyle(el).fontSize) * el.getScreenCTM().a)).toBeGreaterThanOrEqual(11.9);
+  }
+  expect(errors).toEqual([]);
 });

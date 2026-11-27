@@ -4,8 +4,7 @@ Date: 27 November 2026 (Europe/Warsaw).
 
 ## Automated browser checks
 
-Result: **60 passed, 0 failed**, with retries disabled, on commit `bf2e84e015443ef0a1e38a971b986ad6dff492cb`.
-[Verified workflow run](https://github.com/gc2k10/chili-farm/actions/runs/45909166441).
+Release gate: all 60 checks must pass with retries disabled before a draft is created or updated. The draft release links the workflow result for its exact source commit. Earlier successful runs were followed by an intermittent WebKit observer-loop error during the release gate; this was fixed by responding to viewport resize events instead of observing SVG mutations.
 
 Playwright 1.65.1 runs Chromium, Firefox and WebKit at viewport widths of 320, 390, 768 and 1280 pixels (900 pixels high). These are desktop browser engines with resized viewports, not physical phones/tablets or a claim of full Safari/iOS compatibility.
 
@@ -16,7 +15,7 @@ Each browser/width combination checks:
 - Favicon and Apple icon declarations exist; page loading makes no external requests and emits no JavaScript page errors.
 - The period selector changes the chart and live summary, then restores the initial series.
 - Dashboard/presentation navigation and expected source/support destinations.
-- Axis labels retain at least 11.9 rendered pixels and the period selector is at least 44 pixels high; resizing preserves the selected period.
+- Axis labels retain at least 11.9 rendered pixels and the period selector is at least 44 pixels high; repeated resizing preserves the selected period without JavaScript errors.
 
 The report and screenshots are retained by GitHub Actions for 14 days. The release-draft workflow reruns this suite against its exact commit before preparing a draft.
 

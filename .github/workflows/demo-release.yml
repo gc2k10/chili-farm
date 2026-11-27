@@ -32,11 +32,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          cp docs/releases/v0.1.0-demo.md "$RUNNER_TEMP/release-notes.md"
+          printf '\n## Validation evidence\n\nSource commit: %s\n\nPassed browser checks and package verification: https://github.com/%s/actions/runs/%s\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" >> "$RUNNER_TEMP/release-notes.md"
           if gh release view v0.1.0-demo --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "Release already exists; leaving it unchanged."
+            test "$(gh release view v0.1.0-demo --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = true
+            gh release edit v0.1.0-demo --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --notes-file "$RUNNER_TEMP/release-notes.md"
+            gh release upload v0.1.0-demo dist/*.zip dist/SHA256SUMS --repo "$GITHUB_REPOSITORY" --clobber
             exit 0
           fi
           gh release create v0.1.0-demo dist/*.zip dist/SHA256SUMS \
             --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --title "v0.1.0-demo — Standalone synthetic dashboard" \
-            --notes-file docs/releases/v0.1.0-demo.md --draft --prerelease
+            --notes-file "$RUNNER_TEMP/release-notes.md" --draft --prerelease
